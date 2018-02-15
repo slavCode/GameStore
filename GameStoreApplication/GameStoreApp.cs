@@ -1,5 +1,6 @@
 ﻿namespace GameStoreApplication
 {
+    using Controllers;
     using Data;
     using Microsoft.EntityFrameworkCore;
     using Server.Contracts;
@@ -18,7 +19,9 @@
 
         public void Configure(IAppRouteConfig appRouteConfig)
         {
-            
+            appRouteConfig
+                .Get("/register",
+                    req => new AccountController().Register());
         }
     }
 }
