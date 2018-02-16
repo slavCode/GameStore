@@ -8,8 +8,6 @@
   <ItemGroup>
     <Folder Include="Infrastructure\" />
     <Folder Include="Resources\Account\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

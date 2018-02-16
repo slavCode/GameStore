@@ -1,4 +1,6 @@
-﻿namespace GameStoreApplication.Server.Routing.Contracts
+﻿using Microsoft.EntityFrameworkCore.Design;
+
+namespace GameStoreApplication.Server.Routing.Contracts
 {
     using Enums;
     using Handlers;
@@ -9,6 +11,8 @@
     public interface IAppRouteConfig
     {
         IReadOnlyDictionary<HttpRequestMethod, IDictionary<string, RequestHandler>> Routes { get; }
+
+        List<string> AnonymousPaths { get; }
 
         void Get(string route, Func<IHttpRequest, IHttpResponse> handler);
 

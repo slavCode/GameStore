@@ -5,6 +5,10 @@
 
     public class GameStoreDbContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Game> Games { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseSqlServer("Server=Y510P;Database=GameStoreDb;Integrated Security=True");

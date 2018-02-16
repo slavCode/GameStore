@@ -16,6 +16,8 @@
         {
             this.routes = new Dictionary<HttpRequestMethod, IDictionary<string, IRoutingContext>>();
 
+            this.AnonymousPaths = new List<string>(appRouteConfig.AnonymousPaths);
+            
             var availableMethods = Enum
                 .GetValues(typeof(HttpRequestMethod))
                 .Cast<HttpRequestMethod>();
@@ -29,6 +31,8 @@
         }
 
         public IDictionary<HttpRequestMethod, IDictionary<string, IRoutingContext>> Routes => this.routes;
+
+        public ICollection<string> AnonymousPaths { get; private set; }
 
         private void InitializeRouteConfig(IAppRouteConfig appRouteConfig)
         {
