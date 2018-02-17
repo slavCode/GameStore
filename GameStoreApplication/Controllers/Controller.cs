@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
     using System.IO;
     using System.Linq;
     using Server.Enums;
@@ -23,7 +22,9 @@
 
             this.ViewData = new Dictionary<string, string>
             {
-                ["showError"] = "none"
+                ["showError"] = "none",
+                ["authenticatedDisplay"] = "flex",
+                ["anonymousDisplay"] = "none"
 
             };
         }

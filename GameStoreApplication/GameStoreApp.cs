@@ -19,8 +19,8 @@
 
         public void Configure(IAppRouteConfig appRouteConfig)
         {
-            appRouteConfig.AnonymousPaths.Add("/account/register");
             appRouteConfig.AnonymousPaths.Add("/account/login");
+            appRouteConfig.AnonymousPaths.Add("/account/register");
             appRouteConfig.AnonymousPaths.Add("/");
 
 

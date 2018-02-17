@@ -14,6 +14,8 @@
 
         public IHttpResponse Register()
         {
+            SetDefaultViewData();
+
             return this.FileViewResponse(RegisterPath);
         }
 
@@ -38,11 +40,15 @@
 
             ShowError("This e-mail is taken.");
 
+            SetDefaultViewData();
+            
             return this.FileViewResponse(RegisterPath);
         }
 
         public IHttpResponse Login()
         {
+            SetDefaultViewData();
+
             return this.FileViewResponse(LoginPath);
         }
 
@@ -59,6 +65,8 @@
 
             ShowError("Invalid name or password.");
 
+            SetDefaultViewData();
+            
             return this.FileViewResponse(LoginPath);
         }
 
@@ -71,6 +79,12 @@
         private static void LoginUser(IHttpRequest req, string email)
         {
             req.Session.Add(SessionStore.CurrentUserKey, email);
+        }
+
+        public void SetDefaultViewData()
+        {
+            this.ViewData["authenticatedDisplay"] = "none";
+            this.ViewData["anonymousDisplay"] = "flex";
         }
     }
 }
