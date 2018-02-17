@@ -1,6 +1,7 @@
 ﻿namespace GameStoreApplication.Controllers
 {
     using Server.Http.Contracts;
+    using Server.Http;
     using Services;
     using ViewModels.Account;
 
@@ -16,39 +17,38 @@
             return this.FileViewResponse(RegisterPath);
         }
 
-        public IHttpResponse Register(RegisterUserViewModel model)
+        public IHttpResponse Register(IHttpRequest req, RegisterUserViewModel model)
         {
             var error = this.ValidateModel(model);
             if (error != null)
             {
-                this.ViewData["showError"] = "block";
+                ShowError();
                 this.ViewData["error"] = error;
-                
+
                 return this.FileViewResponse(RegisterPath);
             }
 
-            this.users.Create(model);
-
-            return this.FileViewResponse(LoginPath);
-        }
-
-        public IHttpResponse Login()
-        {
-            return this.FileViewResponse(LoginPath);
-        }
-
-        public IHttpResponse Login(LoginUserViewModel loginUser)
-        {
-            var success = this.users.Find(loginUser);
+            var success = this.users.Create(model);
 
             if (success)
             {
-                
+                req.Session.Add(SessionStore.CurrentUserKey, model.Email);
+
+                return this.FileViewResponse(LoginPath);
             }
 
+            else
+            {
+                ShowError();
+                this.ViewData["error"] = "This e-mail is taken.";
 
+                return this.FileViewResponse(RegisterPath);
+            }
+        }
 
-            return this.FileViewResponse(@"account\login");
+        private void ShowError()
+        {
+            this.ViewData["showError"] = "block";
         }
     }
 }

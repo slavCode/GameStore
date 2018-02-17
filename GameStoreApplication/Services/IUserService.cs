@@ -4,8 +4,7 @@
         
     public interface IUserService
     {
-        void Create(RegisterUserViewModel userDetails);
+        bool Create(RegisterUserViewModel model);
 
-        bool Find(LoginUserViewModel loginUserDetails);
     }
 }

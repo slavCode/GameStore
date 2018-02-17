@@ -7,37 +7,30 @@
 
     public class UserService : IUserService
     {
-        public void Create(RegisterUserViewModel userDetails)
+        public bool Create(RegisterUserViewModel model)
         {
             using (var db = new GameStoreDbContext())
             {
+                if (db.Users.Any(u => u.Email == model.Email))
+                {
+                    return false;
+                }
+
                 var isFirstUser = !db.Users.Any();
 
                 var user = new User
                 {
-                    Name = userDetails.FullName,
-                    Email = userDetails.Email,
-                    Password = userDetails.Password
+                    Name = model.FullName,
+                    Email = model.Email,
+                    Password = model.Password
                 };
 
                 if (isFirstUser) user.IsAdmin = true;
 
                 db.Users.Add(user);
                 db.SaveChanges();
-            }
-        }
 
-        public bool Find(LoginUserViewModel loginUserDetails)
-        {
-            using (var db = new GameStoreDbContext())
-            {
-                var user = db
-                    .Users
-                    .FirstOrDefault(u => u.Email == loginUserDetails.Email);
-
-                if (user != null) return true;
-
-                return false;
+                return true;
             }
         }
     }

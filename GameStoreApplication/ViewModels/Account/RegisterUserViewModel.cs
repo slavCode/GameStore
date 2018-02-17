@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Threading;
-
-namespace GameStoreApplication.ViewModels.Account
+﻿namespace GameStoreApplication.ViewModels.Account
 {
     using Common;
     using Infrastructure;
@@ -9,14 +6,14 @@ namespace GameStoreApplication.ViewModels.Account
 
     public class RegisterUserViewModel
     {
-        [DisplayName("E-Mail")]
+        [Display(Name = "E-Mail")]
         [Required]
         [EmailAddress]
         [MaxLength(ValidationConstants.Account.EmailMaxLength, ErrorMessage = ValidationConstants.InvalidMaxLengthErrorMessage)]
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Full name")]
+        [Display(Name = "Full Name")]
         [MinLength(ValidationConstants.Account.NameMinLength, ErrorMessage = ValidationConstants.InvalidMinLengthErrorMessage)]
         [MaxLength(ValidationConstants.Account.NameMaxLength, ErrorMessage = ValidationConstants.InvalidMaxLengthErrorMessage)]
         public string FullName { get; set; }
@@ -24,7 +21,7 @@ namespace GameStoreApplication.ViewModels.Account
         [Password]
         public string Password { get; set; }
 
-        [DisplayName("Confirm password")]
+        [Display(Name = "Confirm Password")]
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
     }

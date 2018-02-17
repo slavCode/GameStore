@@ -16,16 +16,16 @@
             var password = value as string;
             if (password == null)
             {
-                return true;
+                return false;
             }
 
             var regex = Regex.Match(password, @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$");
             if (!regex.Success)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
     }
 }

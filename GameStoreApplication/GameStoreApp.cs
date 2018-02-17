@@ -28,25 +28,13 @@
 
             appRouteConfig
                 .Post("account/register",
-                    req => new AccountController().Register(new RegisterUserViewModel
+                    req => new AccountController().Register(req, new RegisterUserViewModel
                     {
                         FullName = req.FormData["full-name"],
                         Email = req.FormData["email"],
                         Password = req.FormData["password"],
                         ConfirmPassword = req.FormData["confirm-password"]
                     }));
-
-            appRouteConfig
-                .Get("account/login", req => new AccountController().Login());
-
-            appRouteConfig
-                .Post("account/login",
-                   req => new AccountController().Login(
-                       new LoginUserViewModel
-                       {
-                           Email = req.FormData["email"],
-                           Password = req.FormData["password"]
-                       }));
 
         }
     }
