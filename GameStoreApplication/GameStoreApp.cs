@@ -36,6 +36,10 @@
                         ConfirmPassword = req.FormData["confirm-password"]
                     }));
 
+            appRouteConfig
+                .Get("account/login", req => new AccountController().Login());
+
+
         }
     }
 }

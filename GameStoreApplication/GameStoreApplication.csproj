@@ -10,10 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Account\login.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
   </ItemGroup>

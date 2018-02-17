@@ -46,6 +46,11 @@
             }
         }
 
+        public IHttpResponse Login()
+        {
+            return this.FileViewResponse(LoginPath);
+        }
+
         private void ShowError()
         {
             this.ViewData["showError"] = "block";
