@@ -1,6 +1,8 @@
 ﻿namespace GameStoreApplication.Controllers
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    
     using System.IO;
     using System.Linq;
     using Server.Enums;
@@ -19,8 +21,11 @@
         protected Controller()
         {
 
-            this.ViewData = new Dictionary<string, string>();
+            this.ViewData = new Dictionary<string, string>
+            {
+                ["showError"] = "none"
 
+            };
         }
 
         public IHttpResponse FileViewResponse(string fileName)
@@ -44,6 +49,25 @@
             var fileHtml = File.ReadAllText(string.Format(DefaultPath, fileName));
 
             return layoutHtml.Replace(ContentPlaceholder, fileHtml);
+        }
+
+        protected string ValidateModel(object model)
+        {
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+
+            if (Validator.TryValidateObject(model, context, results, true) == false)
+            {
+                foreach (var result in results)
+                {
+                    if (result != ValidationResult.Success)
+                    {
+                        return result.ErrorMessage;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

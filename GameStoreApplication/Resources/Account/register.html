@@ -2,6 +2,11 @@
     <div class="col-12">
         <div class="text-center"><h1 class="display-3">Register</h1></div>
         <br/>
+        <div class="alert alert-danger alert-dismissable" style="display: {{{showError}}}">
+            <a class="close" data-dismiss="alert" aria-label="close">×</a>
+           {{{error}}}
+        </div>
+
         <form method="post">
             <div class="form-group row">
                 <label class="sr-only">Email</label>

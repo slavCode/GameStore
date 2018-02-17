@@ -6,20 +6,49 @@
 
     public class AccountController : Controller
     {
-       private readonly UserService users = new UserService();
+        private const string LoginPath = @"account\login";
+        private const string RegisterPath = @"account\register";
+
+        private readonly UserService users = new UserService();
 
         public IHttpResponse Register()
         {
-            // this.ViewData["content"] = @"account\register";
-
-            return this.FileViewResponse(@"account\register");
+            return this.FileViewResponse(RegisterPath);
         }
 
-        public IHttpResponse Register(RegisterUserViewModel userDetails)
+        public IHttpResponse Register(RegisterUserViewModel model)
         {
-            this.users.Create(userDetails);
+            var error = this.ValidateModel(model);
+            if (error != null)
+            {
+                this.ViewData["showError"] = "block";
+                this.ViewData["error"] = error;
+                
+                return this.FileViewResponse(RegisterPath);
+            }
 
-            return null;
+            this.users.Create(model);
+
+            return this.FileViewResponse(LoginPath);
+        }
+
+        public IHttpResponse Login()
+        {
+            return this.FileViewResponse(LoginPath);
+        }
+
+        public IHttpResponse Login(LoginUserViewModel loginUser)
+        {
+            var success = this.users.Find(loginUser);
+
+            if (success)
+            {
+                
+            }
+
+
+
+            return this.FileViewResponse(@"account\login");
         }
     }
 }

@@ -26,5 +26,19 @@
                 db.SaveChanges();
             }
         }
+
+        public bool Find(LoginUserViewModel loginUserDetails)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                var user = db
+                    .Users
+                    .FirstOrDefault(u => u.Email == loginUserDetails.Email);
+
+                if (user != null) return true;
+
+                return false;
+            }
+        }
     }
 }

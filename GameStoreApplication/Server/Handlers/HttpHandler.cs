@@ -27,12 +27,10 @@ namespace GameStoreApplication.Server.Handlers
         {
             try
             {
-               // Check if user is authenticated
-
-
+                // Check if user is authenticated
                 var anonymousPaths = this.serverRouteConfig.AnonymousPaths;
-                //anonymousPaths.Add("@/login");
 
+                //anonymousPaths.Add("@/login");
                 if (!anonymousPaths.Contains(context.Request.Path) &&
                     !context.Request.Session.Contains(SessionStore.CurrentUserKey))
                 {

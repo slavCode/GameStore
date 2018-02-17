@@ -1,5 +1,7 @@
 ﻿namespace GameStoreApplication.Data.Models
 {
+    using Common;
+    using Infrastructure;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -8,14 +10,17 @@
         public int Id { get; set; }
 
         [Required]
+        [MinLength(ValidationConstants.Account.NameMinLength)]
+        [MaxLength(ValidationConstants.Account.NameMaxLength)]
         public string Name { get; set; }
 
         [Required]
         [EmailAddress]
+        [MaxLength(ValidationConstants.Account.EmailMaxLength)]
         public string Email { get; set; }
 
         [Required]
-        [MinLength(6)]
+        [Password]
         public string Password { get; set; }
 
         public bool IsAdmin { get; set; }

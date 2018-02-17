@@ -1,12 +1,11 @@
-﻿using GameStoreApplication.ViewModels.Account;
-
-namespace GameStoreApplication
+﻿namespace GameStoreApplication
 {
     using Controllers;
     using Data;
     using Microsoft.EntityFrameworkCore;
     using Server.Contracts;
     using Server.Routing.Contracts;
+    using ViewModels.Account;
 
     public class GameStoreApp : IApplication
     {
@@ -21,6 +20,7 @@ namespace GameStoreApplication
         public void Configure(IAppRouteConfig appRouteConfig)
         {
             appRouteConfig.AnonymousPaths.Add("/account/register");
+            appRouteConfig.AnonymousPaths.Add("/account/login");
 
             appRouteConfig
                 .Get("account/register",
@@ -34,8 +34,20 @@ namespace GameStoreApplication
                         Email = req.FormData["email"],
                         Password = req.FormData["password"],
                         ConfirmPassword = req.FormData["confirm-password"]
-
                     }));
+
+            appRouteConfig
+                .Get("account/login", req => new AccountController().Login());
+
+            appRouteConfig
+                .Post("account/login",
+                   req => new AccountController().Login(
+                       new LoginUserViewModel
+                       {
+                           Email = req.FormData["email"],
+                           Password = req.FormData["password"]
+                       }));
+
         }
     }
 }
