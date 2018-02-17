@@ -22,8 +22,7 @@
             var error = this.ValidateModel(model);
             if (error != null)
             {
-                ShowError();
-                this.ViewData["error"] = error;
+                ShowError(error);
 
                 return this.FileViewResponse(RegisterPath);
             }
@@ -32,18 +31,14 @@
 
             if (success)
             {
-                req.Session.Add(SessionStore.CurrentUserKey, model.Email);
+                LoginUser(req, model.Email);
 
                 return this.FileViewResponse(LoginPath);
             }
 
-            else
-            {
-                ShowError();
-                this.ViewData["error"] = "This e-mail is taken.";
+            ShowError("This e-mail is taken.");
 
-                return this.FileViewResponse(RegisterPath);
-            }
+            return this.FileViewResponse(RegisterPath);
         }
 
         public IHttpResponse Login()
@@ -51,9 +46,31 @@
             return this.FileViewResponse(LoginPath);
         }
 
-        private void ShowError()
+        public IHttpResponse Login(IHttpRequest req, LoginUserViewModel model)
+        {
+            var success = this.users.Find(model);
+
+            if (success)
+            {
+                LoginUser(req, model.Email);
+
+                return this.FileViewResponse("/");
+            }
+
+            ShowError("Invalid name or password.");
+
+            return this.FileViewResponse(LoginPath);
+        }
+
+        private void ShowError(string errorMessage)
         {
             this.ViewData["showError"] = "block";
+            this.ViewData["error"] = errorMessage;
+        }
+
+        private static void LoginUser(IHttpRequest req, string email)
+        {
+            req.Session.Add(SessionStore.CurrentUserKey, email);
         }
     }
 }

@@ -40,8 +40,12 @@
 
     <main class="col-4 ml-auto mr-auto text-center">
         <div class="container">
-           {{{content}}}
-           </div>
+            <div class="alert alert-danger alert-dismissable" style="display: {{{showError}}}">
+                <a class="close" data-dismiss="alert" aria-label="close">×</a>
+                {{{error}}}
+            </div>
+            {{{content}}}
+        </div>
     </main>
 
     <!--Footer-->

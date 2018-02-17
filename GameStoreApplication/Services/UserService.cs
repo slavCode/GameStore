@@ -33,5 +33,19 @@
                 return true;
             }
         }
+        
+        public bool Find(LoginUserViewModel model)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                var user = db
+                    .Users
+                    .FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+
+                if (user != null) return true;
+
+                return false;
+            }
+        }
     }
 }

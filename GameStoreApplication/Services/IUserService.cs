@@ -6,5 +6,6 @@
     {
         bool Create(RegisterUserViewModel model);
 
+        bool Find(LoginUserViewModel model);
     }
 }
