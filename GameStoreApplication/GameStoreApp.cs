@@ -19,18 +19,18 @@
 
         public void Configure(IAppRouteConfig appRouteConfig)
         {
+            appRouteConfig.AnonymousPaths.Add("/");
             appRouteConfig.AnonymousPaths.Add("/account/login");
             appRouteConfig.AnonymousPaths.Add("/account/register");
-            appRouteConfig.AnonymousPaths.Add("/");
-
+            appRouteConfig.AnonymousPaths.Add("/account/logout");
 
             appRouteConfig
                 .Get("account/register",
-                    req => new AccountController().Register());
+                    req => new AccountController(req).Register());
 
             appRouteConfig
                 .Post("account/register",
-                    req => new AccountController().Register(req, new RegisterUserViewModel
+                    req => new AccountController(req).Register(new RegisterUserViewModel
                     {
                         FullName = req.FormData["full-name"],
                         Email = req.FormData["email"],
@@ -39,15 +39,21 @@
                     }));
 
             appRouteConfig
-                .Get("account/login", req => new AccountController().Login());
+                .Get("account/login", req => new AccountController(req).Login());
 
             appRouteConfig
                 .Post("account/login",
-                    req => new AccountController().Login(req, new LoginUserViewModel
+                    req => new AccountController(req).Login(new LoginUserViewModel
                     {
                         Email = req.FormData["email"],
                         Password = req.FormData["password"]
                     }));
+
+            appRouteConfig
+                .Get("account/logout", req => new AccountController(req).Logout());
+
+            appRouteConfig
+                .Get("/", req => new HomeController(req).Index());
 
         }
     }

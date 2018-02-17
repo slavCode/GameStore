@@ -9,17 +9,22 @@
     {
         private const string LoginPath = @"account\login";
         private const string RegisterPath = @"account\register";
+        private const string HomePath = "/";
 
-        private readonly UserService users = new UserService();
+        private readonly UserService users;
+
+        public AccountController(IHttpRequest request)
+            : base(request)
+        {
+            this.users = new UserService();
+        }
 
         public IHttpResponse Register()
         {
-            SetDefaultViewData();
-
             return this.FileViewResponse(RegisterPath);
         }
 
-        public IHttpResponse Register(IHttpRequest req, RegisterUserViewModel model)
+        public IHttpResponse Register(RegisterUserViewModel model)
         {
             var error = this.ValidateModel(model);
             if (error != null)
@@ -33,41 +38,42 @@
 
             if (success)
             {
-                LoginUser(req, model.Email);
+                LoginUser(model.Email);
 
                 return this.FileViewResponse(LoginPath);
             }
 
             ShowError("This e-mail is taken.");
 
-            SetDefaultViewData();
-            
             return this.FileViewResponse(RegisterPath);
         }
 
         public IHttpResponse Login()
         {
-            SetDefaultViewData();
-
             return this.FileViewResponse(LoginPath);
         }
 
-        public IHttpResponse Login(IHttpRequest req, LoginUserViewModel model)
+        public IHttpResponse Login(LoginUserViewModel model)
         {
             var success = this.users.Find(model);
 
             if (success)
             {
-                LoginUser(req, model.Email);
+                LoginUser(model.Email);
 
-                return this.FileViewResponse("/");
+                return this.RedirectResponse(HomePath);
             }
 
             ShowError("Invalid name or password.");
 
-            SetDefaultViewData();
-            
-            return this.FileViewResponse(LoginPath);
+            return this.Login();
+        }
+
+        public IHttpResponse Logout()
+        {
+            this.Request.Session.Clear();
+
+            return this.RedirectResponse(HomePath);
         }
 
         private void ShowError(string errorMessage)
@@ -76,15 +82,9 @@
             this.ViewData["error"] = errorMessage;
         }
 
-        private static void LoginUser(IHttpRequest req, string email)
+        private void LoginUser(string email)
         {
-            req.Session.Add(SessionStore.CurrentUserKey, email);
-        }
-
-        public void SetDefaultViewData()
-        {
-            this.ViewData["authenticatedDisplay"] = "none";
-            this.ViewData["anonymousDisplay"] = "flex";
+            this.Request.Session.Add(SessionStore.CurrentUserKey, email);
         }
     }
 }

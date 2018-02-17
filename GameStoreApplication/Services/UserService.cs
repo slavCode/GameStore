@@ -1,4 +1,6 @@
-﻿namespace GameStoreApplication.Services
+﻿using System;
+
+namespace GameStoreApplication.Services
 {
     using Data;
     using Data.Models;
@@ -33,7 +35,7 @@
                 return true;
             }
         }
-        
+
         public bool Find(LoginUserViewModel model)
         {
             using (var db = new GameStoreDbContext())
@@ -45,6 +47,16 @@
                 if (user != null) return true;
 
                 return false;
+            }
+        }
+
+        public bool IsAdmin(string email)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                return db
+                    .Users
+                    .Any(u => u.Email == email && u.IsAdmin);
             }
         }
     }

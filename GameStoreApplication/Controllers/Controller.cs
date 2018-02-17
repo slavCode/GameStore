@@ -5,8 +5,10 @@
     using System.IO;
     using System.Linq;
     using Server.Enums;
+    using Server.Http;
     using Server.Http.Contracts;
     using Server.Http.Response;
+    using Services;
     using Views;
 
 
@@ -15,18 +17,29 @@
         private const string DefaultPath = @"Resources\{0}.html";
         private const string ContentPlaceholder = "{{{content}}}";
 
+        private readonly IUserService users;
+
+        protected IHttpRequest Request { get; private set; }
+
         protected IDictionary<string, string> ViewData { get; private set; }
 
-        protected Controller()
-        {
+        protected IHttpResponse RedirectResponse(string route)
+            => new RedirectResponse(route);
 
+
+        protected Controller(IHttpRequest request)
+        {
+            this.Request = request;
+            this.users = new UserService();
             this.ViewData = new Dictionary<string, string>
             {
                 ["showError"] = "none",
-                ["authenticatedDisplay"] = "flex",
-                ["anonymousDisplay"] = "none"
+                //["authenticatedDisplay"] = "flex",
+                //["anonymousDisplay"] = "none"
 
             };
+
+            ApplyViewData();
         }
 
         public IHttpResponse FileViewResponse(string fileName)
@@ -69,6 +82,38 @@
             }
 
             return null;
+        }
+
+        private void ApplyViewData()
+        {
+            var authenticatedDisplay = "none";
+            var anonymousDisplay = "flex";
+            var adminDisplay = "none";
+
+            var isAuthenticated = this.Request
+                .Session
+                .Contains(SessionStore.CurrentUserKey);
+
+            if (isAuthenticated)
+            {
+                authenticatedDisplay = "flex";
+                anonymousDisplay = "none";
+
+                var email = this.Request
+                    .Session
+                    .Get<string>(SessionStore.CurrentUserKey);
+
+                var isAdmin = this.users.IsAdmin(email);
+
+                if (isAdmin)
+                {
+                    adminDisplay = "flex";
+                }
+            }
+
+            this.ViewData["authenticatedDisplay"] = authenticatedDisplay;
+            this.ViewData["anonymousDisplay"] = anonymousDisplay;
+            this.ViewData["adminDisplay"] = adminDisplay;
         }
     }
 }

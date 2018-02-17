@@ -7,5 +7,7 @@
         bool Create(RegisterUserViewModel model);
 
         bool Find(LoginUserViewModel model);
+
+        bool IsAdmin(string email);
     }
 }

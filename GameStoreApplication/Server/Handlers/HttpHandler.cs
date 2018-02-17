@@ -1,6 +1,4 @@
-﻿using GameStoreApplication.Server.Routing;
-
-namespace GameStoreApplication.Server.Handlers
+﻿namespace GameStoreApplication.Server.Handlers
 {
     using Common;
     using Contracts;
@@ -30,9 +28,8 @@ namespace GameStoreApplication.Server.Handlers
                 // Check if user is authenticated
                 var anonymousPaths = this.serverRouteConfig.AnonymousPaths;
 
-                //anonymousPaths.Add("@/login");
                 if (!anonymousPaths.Contains(context.Request.Path) &&
-                    !context.Request.Session.Contains(SessionStore.CurrentUserKey))
+                    (context.Request.Session == null || !context.Request.Session.Contains(SessionStore.CurrentUserKey)))
                 {
                     return new RedirectResponse(anonymousPaths.First());
                 }
