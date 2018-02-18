@@ -1,4 +1,8 @@
-﻿namespace GameStoreApplication
+﻿using System;
+using System.Globalization;
+using GameStoreApplication.ViewModels.Admin;
+
+namespace GameStoreApplication
 {
     using Controllers;
     using Data;
@@ -59,6 +63,18 @@
 
             appRouteConfig
                 .Get("/admin/games/add", req => new AdminController(req).Add());
+
+            appRouteConfig
+                .Post("/admin/games/add", req => new AdminController(req).Add(new AdminAddGameViewModel
+                {
+                    Title = req.FormData["title"],
+                    Description = req.FormData["description"],
+                    Image = req.FormData["thumbnail"],
+                    Price = decimal.Parse(req.FormData["price"]),
+                    Size = double.Parse(req.FormData["size"]),
+                    Trailer = req.FormData["videoId"],
+                    ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                }));
 
         }
     }
