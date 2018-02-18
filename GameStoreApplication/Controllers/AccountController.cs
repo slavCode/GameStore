@@ -7,11 +7,7 @@
 
     public class AccountController : Controller
     {
-        private const string LoginPath = @"account\login";
-        private const string RegisterPath = @"account\register";
-        private const string HomePath = "/";
-
-        private readonly UserService users;
+       private readonly UserService users;
 
         public AccountController(IHttpRequest request)
             : base(request)

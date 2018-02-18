@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GameStoreApplication.Services
+﻿namespace GameStoreApplication.Services
 {
     using Data;
     using Data.Models;
