@@ -23,6 +23,8 @@
             appRouteConfig.AnonymousPaths.Add("/account/login");
             appRouteConfig.AnonymousPaths.Add("/account/register");
             appRouteConfig.AnonymousPaths.Add("/account/logout");
+            appRouteConfig.AnonymousPaths.Add("/admin/add-game");
+
 
             appRouteConfig
                 .Get("account/register",
@@ -54,6 +56,9 @@
 
             appRouteConfig
                 .Get("/", req => new HomeController(req).Index());
+
+            appRouteConfig
+                .Get("/admin/games/add", req => new AdminController(req).Add());
 
         }
     }
