@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-
-namespace GameStoreApplication.Controllers
+﻿namespace GameStoreApplication.Controllers
 {
     using Server.Http.Contracts;
     using Services;
+    using System;
+    using System.Linq;
     using ViewModels.Admin;
 
     public class AdminController : Controller
