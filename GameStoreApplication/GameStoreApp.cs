@@ -27,7 +27,9 @@ namespace GameStoreApplication
             appRouteConfig.AnonymousPaths.Add("/account/login");
             appRouteConfig.AnonymousPaths.Add("/account/register");
             appRouteConfig.AnonymousPaths.Add("/account/logout");
-            appRouteConfig.AnonymousPaths.Add("/admin/add-game");
+            appRouteConfig.AnonymousPaths.Add("/admin/games/add");
+            appRouteConfig.AnonymousPaths.Add("/admin/games/list");
+
 
 
             appRouteConfig
@@ -75,6 +77,9 @@ namespace GameStoreApplication
                     Trailer = req.FormData["videoId"],
                     ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd", CultureInfo.InvariantCulture)
                 }));
+
+            appRouteConfig
+                .Get(@"/admin/games/list", req => new AdminController(req).List());
 
         }
     }

@@ -13,7 +13,7 @@
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Full Name")]
+        [Display(Name = "Full Title")]
         [MinLength(ValidationConstants.Account.NameMinLength, ErrorMessage = ValidationConstants.InvalidMinLengthErrorMessage)]
         [MaxLength(ValidationConstants.Account.NameMaxLength, ErrorMessage = ValidationConstants.InvalidMaxLengthErrorMessage)]
         public string FullName { get; set; }

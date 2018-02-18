@@ -1,5 +1,8 @@
-﻿namespace GameStoreApplication.Services
+﻿using System.Linq;
+
+namespace GameStoreApplication.Services
 {
+    using System.Collections.Generic;
     using Data;
     using Data.Models;
     using ViewModels.Admin;
@@ -23,6 +26,22 @@
 
                 db.Games.Add(game);
                 db.SaveChanges();
+            }
+        }
+
+        public IEnumerable<AdminListGameViewModel> All()
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                return db
+                    .Games.Select(g => new AdminListGameViewModel
+                    {
+                        Id = g.Id,
+                        Title = g.Title,
+                        Price = g.Price,
+                        Size = g.Size
+                    })
+                    .ToList();
             }
         }
     }

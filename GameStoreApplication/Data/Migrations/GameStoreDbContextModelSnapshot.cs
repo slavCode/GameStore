@@ -59,7 +59,7 @@ namespace GameStoreApplication.Data.Migrations
 
                     b.Property<bool>("IsAdmin");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired();
 
                     b.Property<string>("Password")

@@ -1,4 +1,7 @@
-﻿namespace GameStoreApplication.Controllers
+﻿using System;
+using System.Linq;
+
+namespace GameStoreApplication.Controllers
 {
     using Server.Http.Contracts;
     using Services;
@@ -7,6 +10,8 @@
     public class AdminController : Controller
     {
         private const string AddGamePath = @"admin\add-game";
+        private const string ListGamePath = @"admin\list-games";
+
 
         private readonly IGameService games;
 
@@ -35,7 +40,33 @@
 
             this.games.Create(model);
 
-            return this.RedirectResponse("/admin/games/list");
+            return this.RedirectResponse(ListGamePath);
+        }
+
+        public IHttpResponse List()
+        {
+            if (!this.Authentication.IsAdmin)
+            {
+                return this.RedirectResponse(HomePath);
+            }
+
+            var result = this.games
+                .All()
+                .Select(
+                    g => $@"<tr>
+                                <td>{g.Id}</td>
+                                <td>{g.Title}</td>
+                                <td>{g.Size:F2} GB</td>
+                                <td>{g.Price} &euro;</td>
+                                <td>
+                                   <a class=""btn btn-warning"" href=""/admin/games/edit/{g.Id}"">Edit</a>
+                                   <a class=""btn btn-danger"" href=""/admin/games/delete/{g.Id}"">Delete</a>
+                                </td>
+                            </tr>");
+
+            this.ViewData["results"] = string.Join(Environment.NewLine, result);
+
+            return this.FileViewResponse(ListGamePath);
         }
     }
 }
