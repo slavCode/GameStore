@@ -1,4 +1,6 @@
-﻿namespace GameStoreApplication.Controllers
+﻿using GameStoreApplication.ViewModels.Admin;
+
+namespace GameStoreApplication.Controllers
 {
     using Server.Http.Contracts;
 
@@ -6,14 +8,29 @@
     {
         private const string AddGamePath = @"admin\add-game";
 
-        public AdminController(IHttpRequest request) 
+        public AdminController(IHttpRequest request)
             : base(request)
         {
         }
 
         public IHttpResponse Add()
         {
-            return this.FileViewResponse(AddGamePath);
+            if (this.Authentication.IsAdmin)
+            {
+                return this.FileViewResponse(AddGamePath);
+            }
+
+            return this.RedirectResponse(HomePath);
+        }
+
+        public IHttpResponse Add(AdminAddGameViewModel model)
+        {
+            if (!this.Authentication.IsAdmin)
+            {
+                return this.RedirectResponse(HomePath);
+            }
+
+            return null;
         }
     }
 }
