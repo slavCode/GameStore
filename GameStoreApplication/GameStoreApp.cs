@@ -75,12 +75,32 @@ namespace GameStoreApplication
                     Price = decimal.Parse(req.FormData["price"]),
                     Size = double.Parse(req.FormData["size"]),
                     Trailer = req.FormData["videoId"],
-                    ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                    ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd",
+                        CultureInfo.InvariantCulture)
                 }));
 
             appRouteConfig
-                .Get(@"/admin/games/list", req => new AdminController(req).List());
+                .Get(@"admin/games/list", req => new AdminController(req).List());
 
+            appRouteConfig
+                .Get(@"admin/games/edit/{(?<id>[0-9]+)}", req => new AdminController(req).Edit());
+
+            appRouteConfig
+                .Post(@"admin/games/edit/{(?<id>[0-9]+)}",
+                    req => new AdminController(req).Edit(
+                        new AdminAddGameViewModel
+                        {
+                            Id = int.Parse(req.UrlParameters["id"]),
+                            Description = req.FormData["description"],
+                            Image = req.FormData["thumbnail"],
+                            Price = decimal.Parse(req.FormData["price"]),
+                            ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd",
+                                CultureInfo.InvariantCulture),
+                            Size = double.Parse(req.FormData["size"]),
+                            Title = req.FormData["title"],
+                            Trailer = req.FormData["videoId"]
+
+                        }));
         }
     }
 }

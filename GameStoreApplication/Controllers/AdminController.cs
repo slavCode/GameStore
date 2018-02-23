@@ -67,5 +67,30 @@
 
             return this.FileViewResponse(ListGamePath);
         }
+
+        public IHttpResponse Edit()
+        {
+            var id = int.Parse(this.Request.UrlParameters["id"]);
+
+            var model = this.games.FindById(id);
+
+            this.ViewData["title"] = model.Title;
+            this.ViewData["description"] = model.Description;
+            this.ViewData["thumbnail"] = model.Image;
+            this.ViewData["price"] = model.Price.ToString();
+            this.ViewData["size"] = model.Size.ToString();
+            this.ViewData["videoId"] = model.Trailer;
+            this.ViewData["release-date"] = model.ReleaseDate.ToString("yyyy-MM-dd");
+            this.ViewData["description"] = model.Description;
+
+            return this.FileViewResponse(@"admin\edit-game");
+        }
+
+        public IHttpResponse Edit(AdminAddGameViewModel model)
+        {
+            this.games.Edit(model);
+
+            return this.List();
+        }
     }
 }
