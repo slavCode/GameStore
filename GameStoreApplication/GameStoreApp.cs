@@ -1,15 +1,14 @@
-﻿using System;
-using System.Globalization;
-using GameStoreApplication.ViewModels.Admin;
-
-namespace GameStoreApplication
+﻿namespace GameStoreApplication
 {
     using Controllers;
     using Data;
     using Microsoft.EntityFrameworkCore;
     using Server.Contracts;
     using Server.Routing.Contracts;
+    using System;
+    using System.Globalization;
     using ViewModels.Account;
+    using ViewModels.Admin;
 
     public class GameStoreApp : IApplication
     {
