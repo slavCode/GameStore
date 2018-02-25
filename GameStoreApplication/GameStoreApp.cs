@@ -28,6 +28,10 @@
             appRouteConfig.AnonymousPaths.Add("/account/logout");
             appRouteConfig.AnonymousPaths.Add("/admin/games/add");
             appRouteConfig.AnonymousPaths.Add("/admin/games/list");
+            //appRouteConfig.AnonymousPaths.Add(@"admin/games/delete/{(?<id>[0-9]+)}");
+            //appRouteConfig.AnonymousPaths.Add(@"admin/games/edit/{(?<id>[0-9]+)}");
+
+
 
 
 
@@ -100,6 +104,14 @@
                             Trailer = req.FormData["videoId"]
 
                         }));
+
+            appRouteConfig
+                .Get(@"admin/games/delete/{(?<id>[0-9]+)}",
+                   req => new AdminController(req).Delete(int.Parse(req.UrlParameters["id"])));
+
+            appRouteConfig
+                .Post(@"admin/games/delete/{(?<id>[0-9]+)}",
+                    req => new AdminController(req).Delete());
         }
     }
 }

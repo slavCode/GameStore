@@ -12,5 +12,7 @@
         AdminAddGameViewModel FindById(int id);
 
         void Edit(AdminAddGameViewModel model);
+
+        void DeleteById(int id);
     }
 }

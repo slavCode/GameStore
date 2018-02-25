@@ -1,4 +1,6 @@
-﻿namespace GameStoreApplication.Services
+﻿using System;
+
+namespace GameStoreApplication.Services
 {
     using Data;
     using Data.Models;
@@ -86,6 +88,18 @@
                 game.Size = model.Size;
                 game.Title = model.Title;
                 game.Trailer = model.Trailer;
+
+                db.SaveChanges();
+            }
+        }
+
+        public void DeleteById(int id)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                var game = db.Games.FirstOrDefault(g => g.Id == id);
+
+                if (game != null) db.Remove(game);
 
                 db.SaveChanges();
             }
