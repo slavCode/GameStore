@@ -1,5 +1,4 @@
-﻿
-namespace GameStoreApplication.Controllers
+﻿namespace GameStoreApplication.Controllers
 {
     using Common;
     using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace GameStoreApplication.Controllers
     using Views;
 
 
-    public class Controller
+    public abstract class Controller
     {
         protected const string LoginPath = @"account\login";
         protected const string RegisterPath = @"account\register";
@@ -24,7 +23,7 @@ namespace GameStoreApplication.Controllers
 
         private readonly IUserService users;
 
-       protected Controller(IHttpRequest request)
+        protected Controller(IHttpRequest request)
         {
             this.Request = request;
             this.users = new UserService();
@@ -33,9 +32,6 @@ namespace GameStoreApplication.Controllers
             this.ViewData = new Dictionary<string, string>
             {
                 ["showError"] = "none",
-                //["authenticatedDisplay"] = "flex",
-                //["anonymousDisplay"] = "none"
-
             };
 
             ApplyViewData();
@@ -124,6 +120,7 @@ namespace GameStoreApplication.Controllers
             this.ViewData["authenticatedDisplay"] = authenticatedDisplay;
             this.ViewData["anonymousDisplay"] = anonymousDisplay;
             this.ViewData["adminDisplay"] = adminDisplay;
+            this.ViewData["colsView"] = "class=\"col-4 ml-auto mr-auto text-center\"";
         }
     }
 }
