@@ -8,5 +8,11 @@
         void Create(AdminAddGameViewModel model);
 
         IEnumerable<AdminListGameViewModel> All();
+
+        AdminAddGameViewModel FindById(int id);
+
+        void Edit(AdminAddGameViewModel model);
+
+        void DeleteById(int id);
     }
 }

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Globalization;
-using GameStoreApplication.ViewModels.Admin;
-
-namespace GameStoreApplication
+﻿namespace GameStoreApplication
 {
     using Controllers;
     using Data;
     using Microsoft.EntityFrameworkCore;
     using Server.Contracts;
     using Server.Routing.Contracts;
+    using System;
+    using System.Globalization;
     using ViewModels.Account;
+    using ViewModels.Admin;
 
     public class GameStoreApp : IApplication
     {
@@ -29,6 +28,10 @@ namespace GameStoreApplication
             appRouteConfig.AnonymousPaths.Add("/account/logout");
             appRouteConfig.AnonymousPaths.Add("/admin/games/add");
             appRouteConfig.AnonymousPaths.Add("/admin/games/list");
+            //appRouteConfig.AnonymousPaths.Add(@"admin/games/delete/{(?<id>[0-9]+)}");
+            //appRouteConfig.AnonymousPaths.Add(@"admin/games/edit/{(?<id>[0-9]+)}");
+
+
 
 
 
@@ -75,12 +78,40 @@ namespace GameStoreApplication
                     Price = decimal.Parse(req.FormData["price"]),
                     Size = double.Parse(req.FormData["size"]),
                     Trailer = req.FormData["videoId"],
-                    ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                    ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd",
+                        CultureInfo.InvariantCulture)
                 }));
 
             appRouteConfig
-                .Get(@"/admin/games/list", req => new AdminController(req).List());
+                .Get(@"admin/games/list", req => new AdminController(req).List());
 
+            appRouteConfig
+                .Get(@"admin/games/edit/{(?<id>[0-9]+)}", req => new AdminController(req).Edit());
+
+            appRouteConfig
+                .Post(@"admin/games/edit/{(?<id>[0-9]+)}",
+                    req => new AdminController(req).Edit(
+                        new AdminAddGameViewModel
+                        {
+                            Id = int.Parse(req.UrlParameters["id"]),
+                            Description = req.FormData["description"],
+                            Image = req.FormData["thumbnail"],
+                            Price = decimal.Parse(req.FormData["price"]),
+                            ReleaseDate = DateTime.ParseExact(req.FormData["release-date"], "yyyy-MM-dd",
+                                CultureInfo.InvariantCulture),
+                            Size = double.Parse(req.FormData["size"]),
+                            Title = req.FormData["title"],
+                            Trailer = req.FormData["videoId"]
+
+                        }));
+
+            appRouteConfig
+                .Get(@"admin/games/delete/{(?<id>[0-9]+)}",
+                   req => new AdminController(req).Delete(int.Parse(req.UrlParameters["id"])));
+
+            appRouteConfig
+                .Post(@"admin/games/delete/{(?<id>[0-9]+)}",
+                    req => new AdminController(req).Delete());
         }
     }
 }

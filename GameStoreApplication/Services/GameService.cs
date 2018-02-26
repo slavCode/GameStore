@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
 
 namespace GameStoreApplication.Services
 {
-    using System.Collections.Generic;
     using Data;
     using Data.Models;
+    using System.Collections.Generic;
+    using System.Linq;
     using ViewModels.Admin;
 
     public class GameService : IGameService
@@ -42,6 +43,65 @@ namespace GameStoreApplication.Services
                         Size = g.Size
                     })
                     .ToList();
+            }
+        }
+
+        public AdminAddGameViewModel FindById(int id)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                return db
+                    .Games
+                    .Where(g => g.Id == id)
+                    .Select(g => new AdminAddGameViewModel
+                    {
+                        Id = g.Id,
+                        Description = g.Description,
+                        Size = g.Size,
+                        Price = g.Price,
+                        ReleaseDate = g.ReleaseDate,
+                        Trailer = g.Trailer,
+                        Image = g.Image,
+                        Title = g.Title
+                    })
+                    .FirstOrDefault();
+            }
+        }
+
+        public void Edit(AdminAddGameViewModel model)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                var game = db
+                    .Games
+                    .FirstOrDefault(g => g.Id == model.Id);
+
+                if (game == null)
+                {
+                    return;
+                }
+
+                game.Description = model.Description;
+                game.Image = model.Image;
+                game.Price = model.Price;
+                game.ReleaseDate = model.ReleaseDate;
+                game.Size = model.Size;
+                game.Title = model.Title;
+                game.Trailer = model.Trailer;
+
+                db.SaveChanges();
+            }
+        }
+
+        public void DeleteById(int id)
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                var game = db.Games.FirstOrDefault(g => g.Id == id);
+
+                if (game != null) db.Remove(game);
+
+                db.SaveChanges();
             }
         }
     }
