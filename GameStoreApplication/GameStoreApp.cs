@@ -5,6 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Server.Contracts;
     using Server.Routing.Contracts;
+    using Services;
     using System;
     using System.Globalization;
     using ViewModels.Account;
@@ -12,6 +13,8 @@
 
     public class GameStoreApp : IApplication
     {
+        private readonly IGameService games = new GameService();
+
         public void InitializeDatabase()
         {
             using (var db = new GameStoreDbContext())
@@ -26,14 +29,15 @@
             appRouteConfig.AnonymousPaths.Add("/account/login");
             appRouteConfig.AnonymousPaths.Add("/account/register");
             appRouteConfig.AnonymousPaths.Add("/account/logout");
-            appRouteConfig.AnonymousPaths.Add("/admin/games/add");
-            appRouteConfig.AnonymousPaths.Add("/admin/games/list");
-            //appRouteConfig.AnonymousPaths.Add(@"admin/games/delete/{(?<id>[0-9]+)}");
-            //appRouteConfig.AnonymousPaths.Add(@"admin/games/edit/{(?<id>[0-9]+)}");
 
-
-
-
+            var anonymousGamePaths = this.games.AnonymousGamePaths();
+            if (anonymousGamePaths != null)
+            {
+                foreach (var gamePath in anonymousGamePaths)
+                {
+                    appRouteConfig.AnonymousPaths.Add(gamePath);
+                }
+            }
 
             appRouteConfig
                 .Get("account/register",
@@ -70,7 +74,7 @@
                 .Get("/admin/games/add", req => new AdminController(req).Add());
 
             appRouteConfig
-                .Post("/admin/games/add", req => new AdminController(req).Add(new AdminAddGameViewModel
+                .Post("/admin/games/add", req => new AdminController(req).Add(new GameViewModel
                 {
                     Title = req.FormData["title"],
                     Description = req.FormData["description"],
@@ -91,7 +95,7 @@
             appRouteConfig
                 .Post(@"admin/games/edit/{(?<id>[0-9]+)}",
                     req => new AdminController(req).Edit(
-                        new AdminAddGameViewModel
+                        new GameViewModel
                         {
                             Id = int.Parse(req.UrlParameters["id"]),
                             Description = req.FormData["description"],
@@ -112,6 +116,10 @@
             appRouteConfig
                 .Post(@"admin/games/delete/{(?<id>[0-9]+)}",
                     req => new AdminController(req).Delete());
+
+            appRouteConfig
+                .Get(@"games/{(?<id>[0-9]+)}", 
+                    req => new GameController(req).Details());
         }
     }
 }

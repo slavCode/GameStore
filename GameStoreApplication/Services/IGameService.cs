@@ -5,14 +5,16 @@
 
     public interface IGameService
     {
-        void Create(AdminAddGameViewModel model);
+        void Create(GameViewModel model);
 
         IEnumerable<ListGameViewModel> All();
 
-        AdminAddGameViewModel FindById(int id);
+        GameViewModel FindById(int id);
 
-        void Edit(AdminAddGameViewModel model);
+        void Edit(GameViewModel model);
 
         void DeleteById(int id);
+
+        List<string> AnonymousGamePaths();
     }
 }

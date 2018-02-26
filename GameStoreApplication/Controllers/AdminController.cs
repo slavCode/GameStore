@@ -1,5 +1,6 @@
 ﻿namespace GameStoreApplication.Controllers
 {
+    using Common;
     using Server.Http.Contracts;
     using Services;
     using System;
@@ -13,11 +14,13 @@
 
 
         private readonly IGameService games;
+        private readonly HtmlDataFill dataFill;
 
         public AdminController(IHttpRequest request)
             : base(request)
         {
             this.games = new GameService();
+            this.dataFill = new HtmlDataFill();
         }
 
         public IHttpResponse Add()
@@ -30,7 +33,7 @@
             return this.RedirectResponse(HomePath);
         }
 
-        public IHttpResponse Add(AdminAddGameViewModel model)
+        public IHttpResponse Add(GameViewModel model)
         {
             if (!this.Authentication.IsAdmin)
             {
@@ -74,13 +77,13 @@
 
             var model = this.games.FindById(id);
 
-            HtmlGameDataFill(model);
+            this.dataFill.Game(this.ViewData, model);
 
             return this.FileViewResponse(@"admin\edit-game");
         }
 
-        
-        public IHttpResponse Edit(AdminAddGameViewModel model)
+
+        public IHttpResponse Edit(GameViewModel model)
         {
             this.games.Edit(model);
 
@@ -100,21 +103,9 @@
         {
             var model = this.games.FindById(id);
 
-            HtmlGameDataFill(model);
+            this.dataFill.Game(this.ViewData, model);
 
             return this.FileViewResponse(@"admin\delete-game");
-        }
-
-        private void HtmlGameDataFill(AdminAddGameViewModel model)
-        {
-            this.ViewData["title"] = model.Title;
-            this.ViewData["description"] = model.Description;
-            this.ViewData["thumbnail"] = model.Image;
-            this.ViewData["price"] = model.Price.ToString();
-            this.ViewData["size"] = model.Size.ToString();
-            this.ViewData["videoId"] = model.Trailer;
-            this.ViewData["release-date"] = model.ReleaseDate.ToString("yyyy-MM-dd");
-            this.ViewData["description"] = model.Description;
         }
     }
 }

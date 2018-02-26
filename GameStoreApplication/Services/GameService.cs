@@ -8,7 +8,7 @@
 
     public class GameService : IGameService
     {
-        public void Create(AdminAddGameViewModel model)
+        public void Create(GameViewModel model)
         {
             using (var db = new GameStoreDbContext())
             {
@@ -46,14 +46,14 @@
             }
         }
 
-        public AdminAddGameViewModel FindById(int id)
+        public GameViewModel FindById(int id)
         {
             using (var db = new GameStoreDbContext())
             {
                 return db
                     .Games
                     .Where(g => g.Id == id)
-                    .Select(g => new AdminAddGameViewModel
+                    .Select(g => new GameViewModel
                     {
                         Id = g.Id,
                         Description = g.Description,
@@ -68,7 +68,7 @@
             }
         }
 
-        public void Edit(AdminAddGameViewModel model)
+        public void Edit(GameViewModel model)
         {
             using (var db = new GameStoreDbContext())
             {
@@ -102,6 +102,24 @@
                 if (game != null) db.Remove(game);
 
                 db.SaveChanges();
+            }
+        }
+
+        public List<string> AnonymousGamePaths()
+        {
+            using (var db = new GameStoreDbContext())
+            {
+                if (db.Games.Any())
+                {
+                    var result = db
+                        .Games
+                        .Select(g => $@"/games/{g.Id}")
+                        .ToList();
+
+                    return result;
+                }
+
+                return null;
             }
         }
     }
