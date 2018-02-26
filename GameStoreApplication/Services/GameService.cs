@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GameStoreApplication.Services
+﻿namespace GameStoreApplication.Services
 {
     using Data;
     using Data.Models;
@@ -30,17 +28,19 @@ namespace GameStoreApplication.Services
             }
         }
 
-        public IEnumerable<AdminListGameViewModel> All()
+        public IEnumerable<ListGameViewModel> All()
         {
             using (var db = new GameStoreDbContext())
             {
                 return db
-                    .Games.Select(g => new AdminListGameViewModel
+                    .Games.Select(g => new ListGameViewModel
                     {
                         Id = g.Id,
                         Title = g.Title,
                         Price = g.Price,
-                        Size = g.Size
+                        Size = g.Size,
+                        Thumbnail = g.Image,
+                        Description = g.Description
                     })
                     .ToList();
             }

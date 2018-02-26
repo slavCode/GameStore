@@ -55,15 +55,17 @@
         </nav>
     </header>
 
-    <main class="col-4 ml-auto mr-auto text-center">
-        <div class="container">
-            <div class="alert alert-danger alert-dismissable" style="display: {{{showError}}}">
-                <a class="close" data-dismiss="alert" aria-label="close">×</a>
-                {{{error}}}
-            </div>
-            {{{content}}}
+<main>
+    <div {{{colsView}}}>
+    <div class="container">
+        <div class="alert alert-danger alert-dismissable" style="display: {{{showError}}}">
+            <a class="close" data-dismiss="alert" aria-label="close">×</a>
+            {{{error}}}
         </div>
-    </main>
+        {{{content}}}
+    </div>
+    </div>
+</main>
 
     <!--Footer-->
     <footer>

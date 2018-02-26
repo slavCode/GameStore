@@ -7,7 +7,7 @@
     {
         void Create(AdminAddGameViewModel model);
 
-        IEnumerable<AdminListGameViewModel> All();
+        IEnumerable<ListGameViewModel> All();
 
         AdminAddGameViewModel FindById(int id);
 

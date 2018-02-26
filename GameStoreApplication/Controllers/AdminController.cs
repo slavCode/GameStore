@@ -91,10 +91,6 @@
         {
             var id = int.Parse(this.Request.UrlParameters["id"]);
 
-           // var model = this.games.FindById(id);
-
-           // HtmlGameDataFill(model);
-
             this.games.DeleteById(id);
 
             return this.List();
@@ -120,6 +116,5 @@
             this.ViewData["release-date"] = model.ReleaseDate.ToString("yyyy-MM-dd");
             this.ViewData["description"] = model.Description;
         }
-
     }
 }
