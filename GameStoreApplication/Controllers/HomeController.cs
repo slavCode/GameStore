@@ -72,7 +72,7 @@
                                              {adminButtons
                                                      .Replace("{0}", $"admin/games/edit/{game.Id}")
                                                      .Replace("{1}", $"admin/games/delete/{game.Id}")}
-                                             <a class=""card-button btn btn-outline-primary"" name=""info"" href=""#""   >Info</a>    
+                                             <a class=""card-button btn btn-outline-primary"" name=""info""                              href=""games/{game.Id}"">Info</a>    
                                              <a class=""card-button btn btn-primary"" name=""buy"" href=""#"">Buy</a>
                                            </div>
                                          </div>");

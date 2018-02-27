@@ -120,6 +120,7 @@
             appRouteConfig
                 .Get(@"games/{(?<id>[0-9]+)}", 
                     req => new GameController(req).Details());
+
         }
     }
 }
