@@ -121,6 +121,10 @@
                 .Get(@"games/{(?<id>[0-9]+)}", 
                     req => new GameController(req).Details());
 
+            appRouteConfig
+                .Get(@"shopping/add/{(?<id>[0-9]+)}",
+                    req => new ShoppingController(req).AddToCart());
+
         }
     }
 }

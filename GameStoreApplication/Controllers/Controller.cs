@@ -46,7 +46,7 @@
         protected IHttpResponse RedirectResponse(string route)
             => new RedirectResponse(route);
 
-        public IHttpResponse FileViewResponse(string fileName)
+        protected IHttpResponse FileViewResponse(string fileName)
         {
             var resultHtml = ProcessFileHtml(fileName);
 
